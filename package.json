@@ -1,0 +1,35 @@
+{
+  "name": "js-webdriverio-appium",
+  "version": "1.0.0",
+  "description": "Showcase appium test automation via WebdriverIO/NodeJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webmagit/js-webdriverio-appium.git"
+  },
+  "keywords": [
+    "appium",
+    "webdriverio"
+  ],
+  "author": "Kanak Kalburgi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/webmagit/js-webdriverio-appium/issues"
+  },
+  "homepage": "https://github.com/webmagit/js-webdriverio-appium#readme",
+  "devDependencies": {
+    "@wdio/appium-service": "^6.0.15",
+    "@wdio/browserstack-service": "^6.0.12",
+    "@wdio/cli": "^6.0.15",
+    "@wdio/jasmine-framework": "^6.0.15",
+    "@wdio/local-runner": "^6.0.15",
+    "@wdio/spec-reporter": "^6.0.14",
+    "@wdio/sync": "^6.0.15",
+    "appium": "^1.17.0",
+    "chromedriver": "^81.0.0",
+    "wdio-chromedriver-service": "^6.0.1"
+  }
+}
