@@ -1,0 +1,122 @@
+version: 2
+
+
+references:
+
+  repository_root: &repository_root
+    ~/webmagit/js-webdriverio-appium
+
+  packages_cache_key: &packages_cache_key
+    v1-npm-{{ checksum "package-lock.json" }}
+
+  repo_cache_key: &repo_cache_key
+    v1-repo-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_TAG }}
+
+########################
+#  Base
+########################
+
+defaults: &defaults
+  docker:
+    - image: circleci/node:12.16-browsers
+  working_directory: *repository_root
+
+########################
+# Steps & Helpers
+########################
+
+restore_repo_cache: &restore_repo_cache
+  restore_cache:
+    keys:
+      - *repo_cache_key
+
+restore_npm_cache: &restore_npm_cache
+  restore_cache:
+    keys:
+      - *packages_cache_key
+
+save_repo_cache: &save_repo_cache
+  save_cache:
+    key: *repo_cache_key
+    paths:
+      - *repository_root
+
+save_npm_cache: &save_npm_cache
+  save_cache:
+    key: *packages_cache_key
+    paths:
+      - ./node_modules
+
+########################
+# Jobs
+########################
+
+jobs:
+
+  run_master:
+    <<: *defaults
+    parallelism: 2
+    environment:
+      CI_TEST_REPORTS_DIR: /tmp/circleci-test-results
+    steps:
+    - *restore_repo_cache
+    - checkout
+    - *restore_npm_cache
+    - run: npm install
+    - *save_npm_cache
+    - *save_repo_cache
+    - run:
+        name: Full-Suite
+        when: always
+        command: |
+          if [[ $CIRCLE_JOB ]] ;
+            then
+              case $CIRCLE_NODE_INDEX in
+              0) npm run test ;;
+            esac ;
+          fi
+
+  run_feature_based_tests:
+    <<: *defaults
+    parallelism: 2
+    steps:
+    - *restore_repo_cache
+    - checkout
+    - *restore_npm_cache
+    - run: npm install
+    - *save_npm_cache
+    - *save_repo_cache
+    - run:
+        name: Branch-Tests
+        when: always
+        command: |
+          if [[ $CIRCLE_JOB ]] ;
+            then
+              case $CIRCLE_NODE_INDEX in
+              0) npm run test ;;
+            esac ;
+          fi
+
+########################
+# Workflows
+########################
+
+workflows:
+  version: 2
+  all_integration_tests:
+      triggers:
+        - schedule:
+            cron: "0 0,4,8,12,16,20 * * *"
+            filters:
+              branches:
+                only:
+                  - master
+      jobs:
+        - run_master:
+            filters:
+              branches:
+                only: master
+
+  feature_based_tests:
+      jobs:
+        - run_feature_based_tests
