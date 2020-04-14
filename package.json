@@ -35,6 +35,7 @@
     "appium": "^1.17.0",
     "chromedriver": "^81.0.0",
     "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
     "prettier": "^2.0.4",
     "wdio-chromedriver-service": "^6.0.1"
   }
