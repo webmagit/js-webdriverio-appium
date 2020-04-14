@@ -25,6 +25,7 @@ module.exports = {
   env: {
     mocha: true,
     amd: true,
+    node: true,
   },
   extends: ['eslint:recommended', 'eslint-config-prettier'],
 }

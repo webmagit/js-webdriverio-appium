@@ -24,7 +24,7 @@ exports.config = {
   // NPM script (see https://docs.npmjs.com/cli/run-script) then the current working
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
-  specs: ['./test/specs/**/*.js'],
+  specs: ['./test/specs/web/*.js'],
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
@@ -153,7 +153,11 @@ exports.config = {
     // or website depending on the result. For example, it is pretty handy to take a screenshot every time
     // an assertion fails.
     expectationResultHandler: function (passed, assertion) {
-      // do something
+      if (passed) {
+        return
+      } else {
+        console.log(`Test failed: ` + assertion.error.message)
+      }
     },
   },
 }

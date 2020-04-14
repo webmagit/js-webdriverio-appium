@@ -8,7 +8,7 @@
     "prettier": "prettier \"**/*.+(js|jsx)\"",
     "format": "npm run prettier -- --write",
     "validate": "npm run lint && npm run prettier -- --list-different",
-    "test": "npx wdio wdio.conf.js"
+    "test": "npx wdio config/wdio.conf.js",
   },
   "husky": {
     "hooks": {
