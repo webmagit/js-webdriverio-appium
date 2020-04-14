@@ -94,6 +94,7 @@ jobs:
             then
               case $CIRCLE_NODE_INDEX in
               0) npm run test ;;
+              1) npm run test-ios ;;
             esac ;
           fi
 
