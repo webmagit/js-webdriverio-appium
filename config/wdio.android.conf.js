@@ -3,19 +3,18 @@ exports.config = {
   key: process.env.BROWSERSTACK_ACCESSKEY,
 
   updateJob: false,
-  specs: ['./test/specs/ios/app.login.spec.js'],
+  specs: ['./test/specs/android/app.login.spec.js'],
   exclude: [],
 
   capabilities: [
     {
+      platformName: 'Android',
       name: 'appium_test',
       build: 'Alpha',
-      project: 'myBeepr-iOS',
-      device: 'iPhone 11 Pro',
-      os_version: '13',
-      app:
-        process.env.BROWSERSTACK_APP_ID ||
-        'bs://85d918b76d3b53b4fe3c623949125a76d65e3a81',
+      project: 'myBeepr-Android',
+      device: 'Google Pixel 3',
+      os_version: '9.0',
+      app: process.env.BROWSERSTACK_APP_ID || 'Kickstarter-Android',
       'browserstack.debug': true,
     },
   ],
@@ -32,4 +31,5 @@ exports.config = {
   jasmineNodeOpts: {
     defaultTimeoutInterval: 90000,
   },
+  reporters: ['spec'],
 }
