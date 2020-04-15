@@ -78,7 +78,7 @@ jobs:
 
   run_feature_based_tests:
     <<: *defaults
-    parallelism: 2
+    parallelism: 3
     steps:
     - *restore_repo_cache
     - checkout
@@ -95,6 +95,7 @@ jobs:
               case $CIRCLE_NODE_INDEX in
               0) npm run test ;;
               1) npm run test-ios ;;
+              2) npm run test-android ;;
             esac ;
           fi
 
