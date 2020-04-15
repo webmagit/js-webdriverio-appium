@@ -5,11 +5,19 @@ const home_photo = SELECTORS.getPhoto()
 const user_menu = SELECTORS.getUserMenu()
 const search_icon = SELECTORS.getSearchIcon()
 
-const waitForAppLaunch = () => {
+const checkGuestAccess = () => {
   $(user_menu).waitForDisplayed()
   $(search_icon).waitForDisplayed()
-  $(login_button).waitForDisplayed()
   $(home_photo).waitForDisplayed()
+}
+
+const checkRegisteredUserAccess = (shouldBeRegistered = true) => {
+  $(login_button).waitForDisplayed({ reverse: shouldBeRegistered })
+}
+
+const waitForAppLaunch = () => {
+  checkGuestAccess()
+  checkRegisteredUserAccess(false)
 }
 
 const decideToLogin = () => {
@@ -17,10 +25,8 @@ const decideToLogin = () => {
 }
 
 const waitForLoggedInView = () => {
-  $(user_menu).waitForDisplayed()
-  $(search_icon).waitForDisplayed()
-  $(login_button).waitForDisplayed({ reverse: true })
-  $(home_photo).waitForDisplayed()
+  checkGuestAccess()
+  checkRegisteredUserAccess()
 }
 
 module.exports = {
