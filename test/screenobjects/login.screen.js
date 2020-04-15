@@ -1,4 +1,4 @@
-const SELECTORS = require('../../selectors/login.selectors')
+const SELECTORS = require('../selectors/login.selectors')
 
 const facebook_login_button = SELECTORS.getFacebookLogin()
 const email_login_button = SELECTORS.getEmailLogin()

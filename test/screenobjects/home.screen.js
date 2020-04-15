@@ -1,4 +1,4 @@
-const SELECTORS = require('../../selectors/home.selectors')
+const SELECTORS = require('../selectors/home.selectors')
 
 const login_button = SELECTORS.getLoginButton()
 const home_photo = SELECTORS.getPhoto()

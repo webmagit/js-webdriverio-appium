@@ -1,5 +1,5 @@
-const Home = require('../../screenobjects/components/home.screen')
-const Login = require('../../screenobjects/components/login.screen')
+const Home = require('../../screenobjects/home.screen')
+const Login = require('../../screenobjects/login.screen')
 
 describe('WebdriverIO and Appium, when interacting with a login form,', () => {
   beforeEach(() => {
