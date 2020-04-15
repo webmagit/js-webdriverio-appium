@@ -13,9 +13,7 @@ exports.config = {
       project: 'myBeepr-iOS',
       device: 'iPhone 11 Pro',
       os_version: '13',
-      app:
-        process.env.BROWSERSTACK_APP_ID ||
-        'bs://85d918b76d3b53b4fe3c623949125a76d65e3a81',
+      app: process.env.BROWSERSTACK_IOS_APP || 'Browserstack-Sample-IOS-ipa',
       'browserstack.debug': true,
     },
   ],
