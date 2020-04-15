@@ -3,7 +3,7 @@ exports.config = {
   key: process.env.BROWSERSTACK_ACCESSKEY,
 
   updateJob: false,
-  specs: ['./test/specs/ios/app.login.spec.js'],
+  specs: ['./test/specs/ios/app.test.spec.js'],
   exclude: [],
 
   capabilities: [
