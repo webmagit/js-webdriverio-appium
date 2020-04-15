@@ -1,4 +1,5 @@
 const assert = require('assert')
+const DATA = require('../constants/data')
 
 const getResourceId = selector => {
   const resource = driver.isAndroid
@@ -8,10 +9,14 @@ const getResourceId = selector => {
   return resource
 }
 
+const NAMESPACE = DATA.NAMESPACES.KICKSTARTER
+
 const resolveForAndroid = selector => {
   let placeholder = '__placeholder__'
   let template =
-    'android=new UiSelector().resourceId("com.kickstarter.kickstarter:id/' +
+    'android=new UiSelector().resourceId("' +
+    NAMESPACE +
+    ':id/' +
     placeholder +
     '")'
   let composedResourceId = template.replace(placeholder, selector)

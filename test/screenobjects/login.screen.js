@@ -1,4 +1,5 @@
 const SELECTORS = require('../selectors/login.selectors')
+const DATA = require('../constants/data')
 
 const facebook_login_button = SELECTORS.getFacebookLogin()
 const email_login_button = SELECTORS.getEmailLogin()
@@ -12,8 +13,8 @@ const waitToShow = () => {
 
 const attemptToLoginViaEmail = () => {
   $(email_login_button).click()
-  $(email_field).setValue('mybeepr@webmagic.in')
-  $(password_field).setValue('keepitsimple')
+  $(email_field).setValue(DATA.CREDENTIALS.KICKSTARTER.VALID.EMAIL_ID)
+  $(password_field).setValue(DATA.CREDENTIALS.KICKSTARTER.VALID.PASSWORD)
 
   if (driver.isKeyboardShown()) {
     driver.hideKeyboard()
