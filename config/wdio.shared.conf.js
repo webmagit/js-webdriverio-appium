@@ -1,3 +1,5 @@
+const util = require('../test/helpers/browserstack.utils')
+
 let FAILURE_REASON = ''
 let browserstack_username = process.env.BROWSERSTACK_USER
 let browserstack_password = process.env.BROWSERSTACK_ACCESSKEY
@@ -23,6 +25,13 @@ exports.config = {
   },
   reporters: ['spec'],
 
+  /* 
+  
+  Reference: 
+  https://github.com/webdriverio/webdriverio/blob/master/examples/wdio.conf.js
+
+   */
+
   afterTest: function (test, context, { error }) {
     if (error) {
       // stack is available at error.stack
@@ -30,9 +39,6 @@ exports.config = {
     }
   },
   after: function (result) {
-    let request = require('request')
-
-    let browserstack_sessionID = driver.sessionId
     let testStatus,
       reason = ''
 
@@ -43,24 +49,7 @@ exports.config = {
       testStatus = 'passed'
     }
 
-    request(
-      {
-        uri:
-          'https://' +
-          browserstack_username +
-          ':' +
-          browserstack_password +
-          '@api-cloud.browserstack.com/app-automate/sessions/' +
-          browserstack_sessionID +
-          '.json',
-        method: 'PUT',
-        form: { status: testStatus, reason: reason },
-      },
-      function (error) {
-        if (error) {
-          console.log('Failed to mark Browserstack Status:', error)
-        }
-      },
-    )
+    util.printBrowserstackSessionURL()
+    util.markBrowserstackTestStatus(testStatus, reason)
   },
 }
