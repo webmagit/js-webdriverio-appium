@@ -1,4 +1,4 @@
-const util = require('../helpers/selector_utils')
+const util = require('../helpers/selector.utils')
 
 const LAUNCH = {
   USER_MENU: '~User menu',

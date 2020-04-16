@@ -93,9 +93,9 @@ jobs:
           if [[ $CIRCLE_JOB ]] ;
             then
               case $CIRCLE_NODE_INDEX in
-              0) npm run test ;;
-              1) npm run test-ios ;;
-              2) npm run test-android ;;
+              0) npm run test-ios ;;
+              1) npm run test-android ;;
+              2) npm run test-web ;;
             esac ;
           fi
 
