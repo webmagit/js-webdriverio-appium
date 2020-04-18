@@ -6,11 +6,17 @@ let request = require('request')
 let syncRequest = require('sync-request')
 
 const printBrowserstackSessionURL = () => {
-  let browserstack_projectID = getBrowserstackProjectID()
-  let browserstack_buildID = getBrowserstackBuild(browserstack_projectID)
+  let browserstack_config = getBrowserstackConfiguration()
+  let browserstack_projectID = getBrowserstackProjectID(
+    browserstack_config.project,
+  )
+  let browserstack_buildID = getBrowserstackBuildId(
+    browserstack_projectID,
+    browserstack_config.build,
+  )
 
   let TEST_RESULT_URL =
-    URLS.APP_AUTOMATE_DASHBOARD +
+    getBrowserstackDashboardEndpoint() +
     '/' +
     browserstack_buildID +
     URLS.SESSIONS_PATH +
@@ -24,7 +30,7 @@ const printBrowserstackSessionURL = () => {
 
 const markBrowserstackTestStatus = (testStatus, reason) => {
   let REST_API_URL =
-    URLS.APP_AUTOMATE_API + URLS.SESSIONS_PATH + '/' + driver.sessionId
+    getBrowserstackAPIEndpoint() + URLS.SESSIONS_PATH + '/' + driver.sessionId
 
   request(
     {
@@ -47,11 +53,33 @@ const markBrowserstackTestStatus = (testStatus, reason) => {
   )
 }
 
-function getBrowserstackProjectID() {
+function getBrowserstackConfiguration() {
+  let driverConfig = driver.config
+  let wdioConfig
+
+  wdioConfig = jsonQuery('[_]', {
+    data: driverConfig,
+  }).value
+
+  let capabilities = require('../../' + wdioConfig).config.capabilities
+
+  let build, project
+
+  build = jsonQuery('[build]', {
+    data: capabilities,
+  }).value.toString()
+
+  project = jsonQuery('[project]', {
+    data: capabilities,
+  }).value.toString()
+
+  return { project, build }
+}
+
+function getBrowserstackProjectID(project) {
   var projectID
-  let project = 'myBeepr-Android'
   let APP_AUTOMATE_URL =
-    'https://' + URLS.APP_AUTOMATE_API + URLS.PROJECTS_PATH + '.json'
+    'https://' + getBrowserstackAPIEndpoint() + URLS.PROJECTS_PATH + '.json'
 
   let res = syncRequest('GET', APP_AUTOMATE_URL, {
     headers: {
@@ -72,17 +100,17 @@ function getBrowserstackProjectID() {
   return projectID
 }
 
-function getBrowserstackBuild(projectID) {
-  let APP_AUTOMATE_URL =
+function getBrowserstackBuildId(projectID, build) {
+  let API_URL =
     'https://' +
-    URLS.APP_AUTOMATE_API +
+    getBrowserstackAPIEndpoint() +
     URLS.PROJECTS_PATH +
     '/' +
     projectID +
     '.json'
   var buildID
 
-  var res = syncRequest('GET', APP_AUTOMATE_URL, {
+  var res = syncRequest('GET', API_URL, {
     headers: {
       authorization:
         'Basic ' +
@@ -93,16 +121,28 @@ function getBrowserstackBuild(projectID) {
   })
 
   var response = JSON.parse(res.getBody('utf8')).project
-  var browserstack_buildName = 'Alpha'
 
-  buildID = jsonQuery(
-    'builds[name=' + browserstack_buildName + '][hashed_id]',
-    {
-      data: response,
-    },
-  ).value
+  buildID = jsonQuery('builds[name=' + build + '][hashed_id]', {
+    data: response,
+  }).value
 
   return buildID
+}
+
+function getBrowserstackAPIEndpoint() {
+  const endpoint = driver.isMobile
+    ? URLS.APP_AUTOMATE_API
+    : URLS.WEB_AUTOMATE_API
+
+  return endpoint
+}
+
+function getBrowserstackDashboardEndpoint() {
+  const endpoint = driver.isMobile
+    ? URLS.APP_AUTOMATE_DASHBOARD
+    : URLS.WEB_AUTOMATE_DASHBOARD
+
+  return endpoint
 }
 
 module.exports = {

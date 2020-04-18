@@ -22,8 +22,11 @@ const NAMESPACES = {
 const URLS = {
   BROWSERSTACK: {
     APP_AUTOMATE_API: 'api-cloud.browserstack.com/app-automate',
+    WEB_AUTOMATE_API: 'api-cloud.browserstack.com/automate',
     APP_AUTOMATE_DASHBOARD:
       'https://app-automate.browserstack.com/dashboard/v2/builds',
+    WEB_AUTOMATE_DASHBOARD:
+      'https://automate.browserstack.com/dashboard/v2/builds',
     PROJECTS_PATH: '/projects',
     SESSIONS_PATH: '/sessions',
   },
